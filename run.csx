@@ -5,6 +5,8 @@ using System.Configuration;
 using System.Net;
 using Newtonsoft.Json;
 
+// Version 0.1.0
+
 public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
     log.Info("Webhook was triggered!");
