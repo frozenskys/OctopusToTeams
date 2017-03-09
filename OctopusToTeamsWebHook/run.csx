@@ -1,3 +1,4 @@
+#load "card.csx"
 #r "Newtonsoft.Json"
 
 using System;
@@ -9,7 +10,6 @@ using Newtonsoft.Json;
 public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
     string jsonContent = await req.Content.ReadAsStringAsync();
-    log.Info(jsonContent);
 
     dynamic data = JsonConvert.DeserializeObject(jsonContent);
 
@@ -24,11 +24,22 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
     var category = data.Payload.Event.Category;
     var appKey = "TeamsWebHookUrl";
     var webHookUrl = ConfigurationManager.AppSettings[appKey];
-    var body = new { title = $"{category}", text = $"{message} {occurred}", themeColour = "EA4300"  };
 
+    var messageCard = new MicrosoftTeamsMessageCard {
+        summary = "Octopus Deployment",
+        title ="Octopus Microsoft Teams",
+        potentialAction = new [] { 
+                new MicrosoftTeamsMessagePotentialAction {
+                    name = "View Deployment",
+                    target = new []{"https://trello.com/c/1101/"}
+                }
+        }
+    };
+    
     using (var client = new HttpClient())
     {
-        await client.PostAsJsonAsync(webHookUrl, body);
+        await client.PostAsJsonAsync(webHookUrl, messageCard);
+        log.Info(JsonConvert.SerializeObject(messageCard));
     }
 
     return req.CreateResponse(HttpStatusCode.OK);
