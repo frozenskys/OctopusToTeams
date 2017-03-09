@@ -1,4 +1,5 @@
 #r "Newtonsoft.Json"
+
 using Newtonsoft.Json;
 
 public class MicrosoftTeamsMessagePotentialAction

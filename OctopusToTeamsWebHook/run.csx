@@ -1,12 +1,13 @@
-#load "card.csx"
+#load "microsoftTeamsMessageCard.csx"
 #r "Newtonsoft.Json"
 
 using System;
 using System.Configuration;
 using System.Net;
 using Newtonsoft.Json;
-
-// Version 0.1.0
+using System.Text.RegularExpressions;
+ 
+// Version 0.3.0
 public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
     string jsonContent = await req.Content.ReadAsStringAsync();
@@ -21,13 +22,14 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 
     var message = data.Payload.Event.Message;
     var occurred = data.Payload.Event.Occurred;
-    var category = data.Payload.Event.Category;
+    string category = data.Payload.Event.Category;
+    var s = Regex.Replace(category, "([A-Z]{1,2}|[0-9]+)", " $1").TrimStart();
     var appKey = "TeamsWebHookUrl";
     var webHookUrl = ConfigurationManager.AppSettings[appKey];
 
     var messageCard = new MicrosoftTeamsMessageCard {
-        summary = "Octopus Deployment",
-        title ="Octopus Microsoft Teams",
+        title = $"Octopus {s}",
+        summary = $"{message}",
         potentialAction = new [] { 
                 new MicrosoftTeamsMessagePotentialAction {
                     name = "View Deployment",
@@ -38,7 +40,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
     
     using (var client = new HttpClient())
     {
-        await client.PostAsJsonAsync(webHookUrl, messageCard);
+        //await client.PostAsJsonAsync(webHookUrl, messageCard);
         log.Info(JsonConvert.SerializeObject(messageCard));
     }
 
