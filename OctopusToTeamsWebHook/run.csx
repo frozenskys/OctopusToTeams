@@ -21,9 +21,10 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 
     var message = data.Payload.Event.Message;
     var occurred = data.Payload.Event.Occurred;
+    var category = data.Payload.Event.Category;
     var appKey = "TeamsWebHookUrl";
     var webHookUrl = ConfigurationManager.AppSettings[appKey];
-    var body = new { text = $"{message} {occurred}" };
+    var body = new { title = $"{category}", text = $"{message} {occurred}", themeColour = "EA4300"  };
 
     using (var client = new HttpClient())
     {
