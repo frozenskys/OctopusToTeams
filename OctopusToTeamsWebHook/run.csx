@@ -7,7 +7,7 @@ using System.Net;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
  
-// Version 0.3.0
+// Version 0.3.2
 public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
     string jsonContent = await req.Content.ReadAsStringAsync();
@@ -20,20 +20,22 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
         });
     }
 
-    var message = data.Payload.Event.Message;
+    var summary = data.Payload.Event.Message;
     var occurred = data.Payload.Event.Occurred;
     string category = data.Payload.Event.Category;
-    var s = Regex.Replace(category, "([A-Z]{1,2}|[0-9]+)", " $1").TrimStart();
+    var serverUri = data.Payload.ServerUri;
+    var deployment = data.Payload.Event.MessageReferences[0].ReferencedDocumentId;
+    var title = Regex.Replace(category, "([A-Z]{1,2}|[0-9]+)", " $1").TrimStart();
     var appKey = "TeamsWebHookUrl";
     var webHookUrl = ConfigurationManager.AppSettings[appKey];
 
     var messageCard = new MicrosoftTeamsMessageCard {
-        title = $"Octopus {s}",
-        summary = $"{message}",
+        title = $"Octopus {title}",
+        summary = $"{summary}",
         potentialAction = new [] { 
                 new MicrosoftTeamsMessagePotentialAction {
                     name = "View Deployment",
-                    target = new []{"https://trello.com/c/1101/"}
+                    target = new []{$"{serverUri}/r/{deployment}"}
                 }
         }
     };
