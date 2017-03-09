@@ -7,7 +7,7 @@ using System.Net;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
  
-// Version 0.3.3
+// Version 0.3.4
 public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
     string jsonContent = await req.Content.ReadAsStringAsync();
@@ -32,10 +32,11 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
     var messageCard = new MicrosoftTeamsMessageCard {
         title = $"Octopus {title}",
         summary = $"{summary}",
+        text = $"{summary}",
         potentialAction = new [] { 
                 new MicrosoftTeamsMessagePotentialAction {
                     name = "View Deployment",
-                    target = new []{$"{serverUri}/r/{deployment}"}
+                    target = new []{$"{serverUri}r/{deployment}"}
                 }
         }
     };
