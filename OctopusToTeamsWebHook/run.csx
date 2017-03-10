@@ -41,7 +41,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
                 activityTitle = title,
                 activityImage = $"https://raw.githubusercontent.com/frozenskys/OctopusToTeams/master/{category}.png",
                 activityText = "Here is the build Information",
-                facts = facts = new [] {
+                facts = new [] {
                     new MicrosoftTeamsMessageFacts { name ="User", value = "Richard.Cooper" },
                 },
             }
