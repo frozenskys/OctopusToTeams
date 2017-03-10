@@ -14,13 +14,13 @@ public class MicrosoftTeamsMessagePotentialAction
     public string[] target { get; set; }
 }
 
-public sealed class MicrosoftTeamsMessageFacts
+public class MicrosoftTeamsMessageFacts
 {
     public string name { get; set; }
     public string value { get; set; }
 }
 
-public sealed class MicrosoftTeamsMessageSection
+public class MicrosoftTeamsMessageSection
 {
     public string title { get; set; }
     public string activityTitle { get; set; }
@@ -32,7 +32,7 @@ public sealed class MicrosoftTeamsMessageSection
     public bool? markdown { get; set; }
 }
 
-public sealed class MicrosoftTeamsMessageCard
+public class MicrosoftTeamsMessageCard
 {
     public string summary { get; set; }
     public string text { get; set; }
