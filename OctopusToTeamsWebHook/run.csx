@@ -37,10 +37,13 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
         summary = $"{summary}",
         text = $"{summary}",
         sections = new [] {
-            new MicrosoftTeamsMessageSection{
+            new MicrosoftTeamsMessageSection {
                 activityTitle = title,
                 activityImage = $"https://raw.githubusercontent.com/frozenskys/OctopusToTeams/master/{category}.png",
                 activityText = "Here is the build Information",
+                facts = facts = new [] {
+                    new MicrosoftTeamsMessageFacts { name ="User", value = "Richard.Cooper" },
+                },
             }
         },
         potentialAction = new [] { 
@@ -54,7 +57,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
     using (var client = new HttpClient())
     {
         await client.PostAsJsonAsync(webHookUrl, messageCard);
-        //log.Info(JsonConvert.SerializeObject(messageCard));
+        log.Info(JsonConvert.SerializeObject(messageCard));
     }
 
     return req.CreateResponse(HttpStatusCode.OK);
