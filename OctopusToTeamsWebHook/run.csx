@@ -7,13 +7,14 @@ using System.Net;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
  
-// Version 0.3.4
+// Version 0.3.4.1
 public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
     string jsonContent = await req.Content.ReadAsStringAsync();
 
     dynamic data = JsonConvert.DeserializeObject(jsonContent);
-
+    log.Info(JsonConvert.SerializeObject(data));
+    
     if (data.Payload?.Event?.Message == null) {
         return req.CreateResponse(HttpStatusCode.BadRequest, new {
             error = "Payload.Event.Message missing from body."
@@ -44,7 +45,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
     using (var client = new HttpClient())
     {
         await client.PostAsJsonAsync(webHookUrl, messageCard);
-        log.Info(JsonConvert.SerializeObject(messageCard));
+        //log.Info(JsonConvert.SerializeObject(messageCard));
     }
 
     return req.CreateResponse(HttpStatusCode.OK);
