@@ -7,7 +7,7 @@ using System.Net;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
  
-// Version 0.3.4.1
+// Version 0.3.5
 public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
     string jsonContent = await req.Content.ReadAsStringAsync();
@@ -21,19 +21,28 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
         });
     }
 
+    var appKey = "TeamsWebHookUrl";
+    var webHookUrl = ConfigurationManager.AppSettings[appKey];
+
     var summary = data.Payload.Event.Message;
     var occurred = data.Payload.Event.Occurred;
     string category = data.Payload.Event.Category;
     var serverUri = data.Payload.ServerUri;
     var deployment = data.Payload.Event.MessageReferences[0].ReferencedDocumentId;
+
     var title = Regex.Replace(category, "([A-Z]{1,2}|[0-9]+)", " $1").TrimStart();
-    var appKey = "TeamsWebHookUrl";
-    var webHookUrl = ConfigurationManager.AppSettings[appKey];
 
     var messageCard = new MicrosoftTeamsMessageCard {
         title = $"Octopus {title}",
         summary = $"{summary}",
         text = $"{summary}",
+        sections = new [] {
+            new MicrosoftTeamsMessageSection{
+                activityTitle = title,
+                activityImage = $"https://raw.githubusercontent.com/frozenskys/OctopusToTeams/master/{category}.png",
+                activityText = "Here is the build Information",
+            }
+        },
         potentialAction = new [] { 
                 new MicrosoftTeamsMessagePotentialAction {
                     name = "View Deployment",
