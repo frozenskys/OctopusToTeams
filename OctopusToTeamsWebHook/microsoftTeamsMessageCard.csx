@@ -22,14 +22,14 @@ public class MicrosoftTeamsMessageFacts
 
 public class MicrosoftTeamsMessageSection
 {
-    public string title { get; set; }
+    //public string title { get; set; }
     public string activityTitle { get; set; }
-    public string activitySubtitle { get; set; }
+    //public string activitySubtitle { get; set; }
     public string activityImage { get; set; }
     public string activityText { get; set; }
     public ICollection<MicrosoftTeamsMessageFacts> facts { get; set; }
-    public string text { get; set; }
-    public bool? markdown { get; set; }
+    //public string text { get; set; }
+    //public bool? markdown { get; set; }
 }
 
 public class MicrosoftTeamsMessageCard
