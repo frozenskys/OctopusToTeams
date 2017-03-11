@@ -25,6 +25,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
     var webHookUrl = ConfigurationManager.AppSettings[appKey];
 
     var summary = data.Payload.Event.Message;
+    var username = data.Payload.Event.Username;
     var occurred = data.Payload.Event.Occurred;
     string category = data.Payload.Event.Category;
     var serverUri = data.Payload.ServerUri;
@@ -35,14 +36,14 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
     var messageCard = new MicrosoftTeamsMessageCard {
         title = $"Octopus {title}",
         summary = $"{summary}",
-        text = $"{summary}",
+        //text = $"{summary}",
         sections = new [] {
             new MicrosoftTeamsMessageSection {
                 activityTitle = title,
                 activityImage = $"https://raw.githubusercontent.com/frozenskys/OctopusToTeams/master/{category}.png",
-                activityText = "Here is the build Information",
+                activityText = $"{summary}",
                 facts = new [] {
-                    new MicrosoftTeamsMessageFacts { name ="User", value = "Richard.Cooper" },
+                    new MicrosoftTeamsMessageFacts { name ="User", value = $"{username}" },
                 },
             }
         },
@@ -54,11 +55,12 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
         }
     };
     
+    var ret = "";
     using (var client = new HttpClient())
     {
         await client.PostAsJsonAsync(webHookUrl, messageCard);
-        log.Info(JsonConvert.SerializeObject(messageCard));
+        log.Info(JsonConvert.SerializeObject(messageCard, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
     }
 
-    return req.CreateResponse(HttpStatusCode.OK);
+    return req.CreateResponse(HttpStatusCode.OK, messageCard);
 }

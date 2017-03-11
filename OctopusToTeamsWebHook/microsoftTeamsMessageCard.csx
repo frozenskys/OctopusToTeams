@@ -22,21 +22,45 @@ public class MicrosoftTeamsMessageFacts
 
 public class MicrosoftTeamsMessageSection
 {
-    //public string title { get; set; }
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
+    public string title { get; set; }
+    
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
     public string activityTitle { get; set; }
-    //public string activitySubtitle { get; set; }
+
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
+    public string activitySubtitle { get; set; }
+    
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
     public string activityImage { get; set; }
+
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
     public string activityText { get; set; }
+
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
     public ICollection<MicrosoftTeamsMessageFacts> facts { get; set; }
-    //public string text { get; set; }
-    //public bool? markdown { get; set; }
+
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
+    public string text { get; set; }
+
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
+    public bool? markdown { get; set; }
 }
 
 public class MicrosoftTeamsMessageCard
 {
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
     public string summary { get; set; }
+    
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
     public string text { get; set; }
+    
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
     public string title { get; set; }
+    
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
     public ICollection<MicrosoftTeamsMessageSection> sections { get; set; }
+
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
     public ICollection<MicrosoftTeamsMessagePotentialAction> potentialAction { get; set; }
 }
