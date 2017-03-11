@@ -7,7 +7,7 @@ using System.Net;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
  
-// Version 0.3.7
+// Version 0.3.8
 public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
     string jsonContent = await req.Content.ReadAsStringAsync();
