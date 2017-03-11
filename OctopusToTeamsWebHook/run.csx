@@ -49,7 +49,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
         potentialAction = new [] { 
                 new MicrosoftTeamsMessagePotentialAction {
                     name = "View Deployment",
-                    target = new []{$"{serverUri}r/{deployment}"}
+                    target = new []{$"{serverUri}api/deployments/{deployment}"}
                 }
         }
     };
