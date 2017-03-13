@@ -55,7 +55,6 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
         }
     };
     
-    var ret = "";
     using (var client = new HttpClient())
     {
         await client.PostAsJsonAsync(webHookUrl, messageCard);
